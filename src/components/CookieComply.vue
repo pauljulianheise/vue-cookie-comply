@@ -8,8 +8,8 @@
     </div>
 
     <div class="cookie-comply__actions">
-      <cookie-comply-button @handleClick="openPreferences">
-        {{ preferencesLabel }}
+      <cookie-comply-button @handleClick="rejectCookies">
+        {{ rejectLabel }}
       </cookie-comply-button>
       <cookie-comply-button
         class-name="cookie-comply__button-accept"
@@ -60,12 +60,12 @@ export default {
       default:
         'We use cookies and similar technologies to help personalize content and offer a better experience. You can opt to customize them by clicking the preferences button.',
     },
-    preferencesLabel: { type: String, default: 'Preferences' },
+    rejectLabel: { type: String, default: 'Reject' },
     acceptAllLabel: { type: String, default: 'Accept All' },
     preferences: { type: Array, default: () => [] },
     target: { type: String, default: 'body' }
   },
-  emits: ['on-accept-all-cookies', 'on-save-cookie-preferences'],
+  emits: ['on-accept-all-cookies', 'on-save-cookie-preferences','on-declined'],
   data() {
     return {
       showCookieComply: true,
@@ -85,6 +85,10 @@ export default {
     },
     openPreferences() {
       this.isModalOpen = true;
+    },
+    rejectCookies() {
+      localStorage.setItem('cookie-comply', 'rejected');
+      this.$emit('on-reject');
     },
     onSave(data) {
       this.isModalOpen = false;
